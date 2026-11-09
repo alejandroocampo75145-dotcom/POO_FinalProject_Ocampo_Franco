@@ -9,4 +9,6 @@ public class Customer implements Serializable{
     private boolean active;
     private Vehicle vehicle;
 
+    
+
 }
