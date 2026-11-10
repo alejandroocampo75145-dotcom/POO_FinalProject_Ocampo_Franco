@@ -13,5 +13,4 @@ public class Receipt implements Serializable {
     private String issueDate;
     private boolean isCancelled;
 
-    // Constructores, getters, setters y métodos de negocio...
 }
