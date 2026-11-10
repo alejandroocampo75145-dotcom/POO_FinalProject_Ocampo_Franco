@@ -10,6 +10,12 @@ public abstract class Vehicle implements Serializable {
     private String brand;
     private Customer owner;
 
+    public Vehicle(String newVehiclePlate, String newBrand, Customer newOwner){
+        setVehicleTape(newVehiclePlate);
+        setOwner(newOwner);
+        setBrand(newBrand);
+    }
+    
     public void setVehicleTape(String newVehicleTape){
         if(newVehicleTape.isEmpty()|| newVehicleTape.isBlank()){
             throw new IllegalArgumentException("The tape of the vehicle can't be empty");
