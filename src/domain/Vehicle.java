@@ -16,11 +16,11 @@ public abstract class Vehicle implements Serializable {
         setBrand(newBrand);
     }
     
-    public void setVehicleTape(String newVehicleTape){
-        if(newVehicleTape.isEmpty()|| newVehicleTape.isBlank()){
+    public void setVehicleTape(String newVehiclePlate){
+        if(newVehiclePlate==null|| newVehiclePlate.isBlank()){
             throw new IllegalArgumentException("The tape of the vehicle can't be empty");
         }
-        this.vehiclePlate= newVehicleTape;
+        this.vehiclePlate= newVehiclePlate;
     }
     public String getVehicleTape(){
         return vehiclePlate;
