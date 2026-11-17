@@ -34,21 +34,70 @@ classDiagram
     Vehicle <|-- Bicycle
 
     class ParkingLot {
+        -name : String
+        -address : String
+        -totalSpaces : int
+        -vehicles : ArrayList~Vehicle~
+        -receipts : ArrayList~Receipt~
+        -parkingSpots : ArrayList~ParkingSpot~
+        -customers : ArrayList~Customer~
     }
     class ParkingSpot {
+        -spaceNumber : int
+        -spotType : String
+        -isEnabled : boolean
+        -vehicle : Vehicle
     }
     class Customer {
+        -id : int
+        -name : String
+        -phoneNumber : String
+        -email : String
+        -active : boolean
+        -vehicle : Vehicle
     }
     class Receipt {
+        -id : int
+        -customer : Customer
+        -vehicle : Vehicle
+        -hours : int
+        -totalAmount : double
+        -issueDate : String
+        -isCancelled : boolean
     }
     class Vehicle {
         <<Abstract>>
+        -vehiclePlate : String
+        -brand : String
+        -owner : Customer
+        +Vehicle(newVehiclePlate : String, newBrand : String, newOwner : Customer)
+        +setVehicleTape(newVehiclePlate : String) : void
+        +getVehicleTape() : String
+        +setBrand(newBrand : String) : void
+        +getBrand() : String
+        +setOwner(newOwner : Customer) : void
+        +getOwner() : Customer
+        +getHourlyRate() : double*
+        +getVehicleType() : String*
     }
     class Car {
+        +Car(newVehiclePlate : String, newBrand : String, newOwner : Customer)
+        +getHourlyRate() : double
+        +getVehicleType() : String
     }
     class Motorcycle {
+        +Motorcycle(newVehiclePlate : String, newBrand : String, newOwner : Customer)
+        +getHourlyRate() : double
+        +getVehicleType() : String
     }
     class Truck {
+        +Truck(newVehiclePlate : String, newBrand : String, newOWner : Customer)
+        +getHourlyRate() : double
+        +getVehicleType() : String
     }
     class Bicycle {
+        +Bicycle(newBrand : String, newOwner : Customer)
+        +getHourlyRate() : double
+        +getVehicleType() : String
     }
+```

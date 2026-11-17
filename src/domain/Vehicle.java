@@ -11,18 +11,18 @@ public abstract class Vehicle implements Serializable {
     private Customer owner;
 
     public Vehicle(String newVehiclePlate, String newBrand, Customer newOwner){
-        setVehicleTape(newVehiclePlate);
+        setVehiclePlate(newVehiclePlate);
         setOwner(newOwner);
         setBrand(newBrand);
     }
     
-    public void setVehicleTape(String newVehiclePlate){
+    public void setVehiclePlate(String newVehiclePlate){
         if(newVehiclePlate==null|| newVehiclePlate.isBlank()){
             throw new IllegalArgumentException("The tape of the vehicle can't be empty");
         }
         this.vehiclePlate= newVehiclePlate;
     }
-    public String getVehicleTape(){
+    public String getVehiclePlate(){
         return vehiclePlate;
     }
 
