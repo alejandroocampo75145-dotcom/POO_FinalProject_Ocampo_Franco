@@ -66,7 +66,7 @@ public class ParkingSpot implements Serializable {
     }
 
 
-   public void setSpaceNumber(int spaceNumber) {
+   private void setSpaceNumber(int spaceNumber) {
     if (spaceNumber < 0 || spaceNumber > 21) {
         throw new IllegalArgumentException("Space number must be between 0 and 21");
     }
@@ -77,7 +77,7 @@ public class ParkingSpot implements Serializable {
         return spaceNumber;
     }
 
-    public void setSpotType(String spotType) {
+    private void setSpotType(String spotType) {
     if (spotType == null || spotType.isBlank()) {
         throw new IllegalArgumentException("Spot type can't be empty");
     }

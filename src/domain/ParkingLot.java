@@ -16,15 +16,34 @@ public class ParkingLot implements Serializable {
     private ArrayList<ParkingSpot> parkingSpots;
     private ArrayList<Customer> customers;
 
+    
     public ParkingLot(String newName, String newAddress) {
-        setName(newName);
-        setAddress(newAddress);
-        this.totalSpaces = TOTAL_SPACES;
-        this.vehicles = new ArrayList<>();
-        this.receipts = new ArrayList<>();
-        this.parkingSpots = new ArrayList<>();
-        this.customers = new ArrayList<>();
+    setName(newName);
+    setAddress(newAddress);
+    this.totalSpaces = TOTAL_SPACES;
+    this.vehicles = new ArrayList<>();
+    this.receipts = new ArrayList<>();
+    this.parkingSpots = new ArrayList<>();
+    this.customers = new ArrayList<>();
+    initializeSpots();
+}
+
+// Initializes the 22 fixed parking spots with their assigned vehicle types
+    private void initializeSpots() {
+        for (int i = 0; i < TOTAL_SPACES; i++) {
+            if (i < 6) {
+                this.parkingSpots.add(new ParkingSpot(i, "Car"));
+            } else if (i < 12) {
+                this.parkingSpots.add(new ParkingSpot(i, "Motorcycle"));
+            } else if (i < 17) {
+                this.parkingSpots.add(new ParkingSpot(i, "Truck"));
+            } 
+            else {
+                this.parkingSpots.add(new ParkingSpot(i, "Bicycle"));
+        }
     }
+}
+
 
     public void setName(String newName) {
         if (newName == null || newName.isBlank()) {
@@ -67,4 +86,5 @@ public class ParkingLot implements Serializable {
     public ArrayList<Customer> getCustomers() {
         return customers;
     }
+
 }
