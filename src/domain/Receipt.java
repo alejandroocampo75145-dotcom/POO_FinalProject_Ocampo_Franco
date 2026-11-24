@@ -3,7 +3,7 @@ package domain;
 import java.io.Serializable;
 
 public class Receipt implements Serializable {
-    private static final long serialVersionUID = 1L;
+    
 
     private int id;
     private Customer customer;
@@ -13,4 +13,11 @@ public class Receipt implements Serializable {
     private String issueDate;
     private boolean isCancelled;
 
+
+    public void setId(int newID){
+        if (newID<=0){
+            throw new IllegalArgumentException("The id must be a possitive number");
+        }
+
+    }
 }

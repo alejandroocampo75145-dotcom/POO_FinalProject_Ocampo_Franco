@@ -2,8 +2,8 @@
 **Proyecto Final — Programación Orientada a Objetos (Java 25 LTS)**
 
 **Integrantes:** 
-* Alejandro Ocampo Escobar (Código: 75145)
-* Joshua Franco (Código: 75283)
+- Alejandro Ocampo Escobar (Código: 75145)
+- Joshua Franco (Código: 75283)
 
 ---
 
@@ -66,13 +66,12 @@ classDiagram
         -receipts : ArrayList~Receipt~
         -parkingSpots : ArrayList~ParkingSpot~
         -customers : ArrayList~Customer~
-        +ParkingLot(name : String, address : String, totalSpaces : int)
+        +ParkingLot(name : String, address : String)
         +getName() : String
         +setName(name : String) : void
         +getAddress() : String
         +setAddress(address : String) : void
         +getTotalSpaces() : int
-        +setTotalSpaces(totalSpaces : int) : void
         +getVehicles() : ArrayList~Vehicle~
         +getReceipts() : ArrayList~Receipt~
         +getParkingSpots() : ArrayList~ParkingSpot~
@@ -191,4 +190,3 @@ classDiagram
         +getVehicleType() : String
     }
 ```
-
