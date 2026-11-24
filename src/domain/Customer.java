@@ -9,7 +9,7 @@ public class Customer implements Serializable{
     private String phoneNumber;
     private String email;
     private boolean active;
-    private List<Vehicle> vehicles;
+    private ArrayList<Vehicle> vehicles;
 
     public Customer(int id, String name, String phoneNumber, String email){
         setId(id);
@@ -88,7 +88,7 @@ public class Customer implements Serializable{
 
     public void setId(int id){
         if(id <= 0){
-            throw new IllegalArgumentException("The ID of the customer can't be negative");
+            throw new IllegalArgumentException("The ID of the customer must be a positive integer");
         }
         this.id = id;
     }
