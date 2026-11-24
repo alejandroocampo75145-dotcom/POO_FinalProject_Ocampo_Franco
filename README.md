@@ -116,7 +116,7 @@ classDiagram
         -phoneNumber : String
         -email : String
         -active : boolean
-        -vehicle : Vehicle
+        -vehicles : ArrayList~Vehicle~
         +Customer(id : int, name : String, phoneNumber : String, email : String)
         +getId() : int
         +setId(id : int) : void
@@ -128,8 +128,8 @@ classDiagram
         +setEmail(email : String) : void
         +isActive() : boolean
         +setActive(active : boolean) : void
-        +getVehicle() : Vehicle
-        +setVehicle(vehicle : Vehicle) : void
+        +getVehicle() : ArrayList~Vehicle~
+        +addVehicle(vehicle : Vehicle) : void
     }
     class Receipt {
         -id : int
