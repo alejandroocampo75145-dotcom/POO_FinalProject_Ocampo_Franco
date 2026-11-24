@@ -37,7 +37,7 @@ public class Customer implements Serializable{
         this.vehicles.add(vehicle);
     }
 
-    public List<Vehicle> getVehicles() {
+    public ArrayList<Vehicle> getVehicles() {
     return vehicles;
 }
 

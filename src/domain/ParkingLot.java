@@ -87,4 +87,42 @@ public class ParkingLot implements Serializable {
         return customers;
     }
 
+    public void addCustomer(Customer customer){
+        if (customer == null){
+            throw new IllegalArgumentException(" Customer can not be null");
+        }
+        if(findCustomerById(customer.getId()) != null){
+            throw new IllegalArgumentException("Can not register an existent customer");
+        }
+        this.customers.add(customer);
+
+    }
+
+    public Customer findCustomerById(int id){
+        for (Customer customer: customers){
+            if (customer.getId() == id)
+                return customer;
+        }
+        return null;
+    }
+
+    public void updateCustomerInformation(int id, String newPhoneNumber, String newEmail){
+        Customer customer = findCustomerById(id);
+        if(customer == null){
+            throw new IllegalArgumentException("Customer with id " + id + "was not found");
+        }
+        customer.setEmail(newEmail);
+        customer.setPhoneNumber(newPhoneNumber);
+    }
+    public void deActivateCustomer(int id){
+        Customer customer = findCustomerById(id);
+        if (customer == null){
+            throw new IllegalArgumentException("Customer with id " + id + "was not found");
+        }
+        if(!customer.isActive()){
+            throw new IllegalArgumentException("The customer is already inactive");
+        }
+
+        customer.setDeactivate();
+    }
 }
