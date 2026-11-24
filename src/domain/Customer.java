@@ -1,7 +1,7 @@
 package domain;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class Customer implements Serializable{
     private int id;
