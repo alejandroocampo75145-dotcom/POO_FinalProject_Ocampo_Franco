@@ -1,40 +1,42 @@
 # Smart Parking System
-**Proyecto Final — Programación Orientada a Objetos (Java 25 LTS)**
+**Proyecto Final — Programación Orientada a Objetos**
 
-**Integrantes:** 
+**Integrantes:**
 - Alejandro Ocampo Escobar (Código: 75145)
 - Joshua Franco (Código: 75283)
 
 ---
 
 ## Descripción General
-Sistema de gestión interna diseñado para el personal operativo y administrativo de un parqueadero inteligente. Permite administrar clientes, registrar y clasificar distintos tipos de vehículos (Carros, Motos, Camiones y Bicicletas), asignar espacios de parqueo dinámicamente, calcular tarifas mediante polimorfismo y emitir un historial inmutable de recibos. Incluye persistencia binaria mediante serialización de objetos, exportación de reportes a archivos `.csv` y un módulo de apoyo a decisiones para recomendación de espacios y análisis de ocupación.
+**Smart Parking System** es una aplicación de consola diseñada para facilitar la administración diaria de un parqueadero con capacidad fija de 22 espacios. El sistema centraliza el registro de clientes y vehículos, organiza la ocupación de los espacios según el tipo de vehículo, calcula automáticamente el valor a cobrar por horas de estadía y conserva un historial de recibos junto con el respaldo de toda la información.
 
 ---
 
-## Arquitectura del Proyecto
-```text
-POO_FinalProject_Ocampo_Franco/
-├── src/
-│   ├── ui/         # Interfaz de usuario por consola (menús e interacción)
-│   ├── domain/     # Entidades del modelo, reglas de negocio y lógica de decisión
-│   └── data/       # Persistencia serializada (.dat/.ser) y exportación a CSV
-└── README.md
-```
+## ¿Qué puede hacer el sistema?
+- **Gestión de clientes:** Registrar nuevos clientes, consultarlos por su identificación, actualizar sus datos de contacto y desactivarlos sin borrar su historial.
+- **Registro de vehículos:** Asociar carros, motos, camiones y bicicletas a cada cliente, aplicando tarifas por hora diferentes según el tipo de vehículo.
+- **Control de espacios:** Administrar los 22 espacios del parqueadero, verificar cuáles están disponibles, ocupados o deshabilitados, y asegurar que cada vehículo ocupe un espacio compatible.
+- **Ingreso y salida con facturación:** Registrar la entrada de un vehículo, calcular el valor total al salir según las horas de estadía y emitir un recibo detallado.
+- **Historial de recibos:** Consultar los comprobantes generados y anularlos en caso de error sin eliminar el registro.
+- **Recomendación de espacios:** Sugerir un espacio disponible adecuado para el vehículo que ingresa.
+- **Guardado de información y reportes:** Guardar y recuperar los datos del parqueadero entre sesiones y exportar la información en archivos CSV.
 
 ---
 
-## Instrucciones de Ejecución
-1. Verificar que **Java 25 LTS (OpenJDK 25)** esté instalado (`java -version`).
-2. Abrir una terminal en la raíz del repositorio y compilar el código fuente:
-   ```bash
-   javac -d bin src/domain/*.java src/data/*.java src/ui/*.java
-   ```
-3. Ejecutar la aplicación desde la clase principal:
-   ```bash
-   java -cp bin ui.MainConsole
-   ```
-   *(También puede ejecutarse directamente abriendo el proyecto en Visual Studio Code y corriendo `MainConsole.java`).*
+## Estructura y Clases del Proyecto
+
+El proyecto está organizado en tres partes principales:
+- **Lógica del parqueadero (`domain`):** Contiene las entidades del sistema y las reglas de funcionamiento.
+- **Manejo de archivos (`data`):** Se encarga de guardar y cargar la información del parqueadero y generar reportes.
+- **Interfaz de consola (`ui`):** Muestra los menús y permite al operador interactuar con el sistema.
+
+Las clases principales que conforman el modelo del parqueadero son:
+- **`ParkingLot`:** Es la clase central que representa el parqueadero (22 espacios) y coordina las listas de clientes, vehículos, espacios y recibos.
+- **`ParkingSpot`:** Representa cada espacio individual del parqueadero, indicando su número, el tipo de vehículo que acepta y si está disponible, ocupado o deshabilitado.
+- **`Customer`:** Almacena los datos personales del cliente, su estado (activo o inactivo) y los vehículos registrados a su nombre.
+- **`Vehicle`:** Define los datos comunes de cualquier vehículo (placa, marca y propietario) y establece el comportamiento general para calcular tarifas.
+- **`Car`, `Motorcycle`, `Truck` y `Bicycle`:** Representan cada tipo de vehículo que atiende el parqueadero, cada uno con su propia tarifa por hora.
+- **`Receipt`:** Representa el comprobante generado al finalizar una estadía, guardando el cliente, el vehículo, el espacio utilizado, las horas, la fecha, el total a pagar y si fue anulado.
 
 ---
 
@@ -66,11 +68,11 @@ classDiagram
         -receipts : ArrayList~Receipt~
         -parkingSpots : ArrayList~ParkingSpot~
         -customers : ArrayList~Customer~
-        +ParkingLot(name : String, address : String)
+        +ParkingLot(newName : String, newAddress : String)
         +getName() : String
-        +setName(name : String) : void
+        +setName(newName : String) : void
         +getAddress() : String
-        +setAddress(address : String) : void
+        +setAddress(newAddress : String) : void
         +getTotalSpaces() : int
         +getVehicles() : ArrayList~Vehicle~
         +getReceipts() : ArrayList~Receipt~
@@ -109,6 +111,7 @@ classDiagram
         +isAvailable() : boolean
         +isOccupied() : boolean
         +departed() : Vehicle
+        +toString() : String
     }
     class Customer {
         -id : int
@@ -127,9 +130,11 @@ classDiagram
         +getEmail() : String
         +setEmail(email : String) : void
         +isActive() : boolean
-        +setActive(active : boolean) : void
-        +getVehicle() : ArrayList~Vehicle~
+        +setActive() : void
+        +setDeactivate() : void
+        +getVehicles() : List~Vehicle~
         +addVehicle(vehicle : Vehicle) : void
+        +toString() : String
     }
     class Receipt {
         -id : int

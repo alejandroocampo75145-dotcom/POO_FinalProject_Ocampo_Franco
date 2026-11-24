@@ -2,8 +2,8 @@ package domain;
 import java.io.Serializable;
 
 public class Truck extends Vehicle implements Serializable{
-    public Truck(String newVehiclePlate, String newBrand, Customer newOWner){
-        super(newVehiclePlate, newBrand, newOWner);
+    public Truck(String newVehiclePlate, String newBrand, Customer newOwner){
+        super(newVehiclePlate, newBrand, newOwner);
     }
 
     @Override 

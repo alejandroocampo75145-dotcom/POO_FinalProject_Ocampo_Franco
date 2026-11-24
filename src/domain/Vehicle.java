@@ -18,7 +18,7 @@ public abstract class Vehicle implements Serializable {
     
     public void setVehiclePlate(String newVehiclePlate){
         if(newVehiclePlate==null|| newVehiclePlate.isBlank()){
-            throw new IllegalArgumentException("The tape of the vehicle can't be empty");
+            throw new IllegalArgumentException("The plate of the vehicle can't be empty");
         }
         this.vehiclePlate= newVehiclePlate;
     }
@@ -27,8 +27,8 @@ public abstract class Vehicle implements Serializable {
     }
 
     public void setBrand(String newBrand){
-        if(newBrand.isEmpty()|| newBrand.isBlank()){
-            throw new IllegalArgumentException("The tape of the vehicle can't be empty");
+        if(newBrand==null|| newBrand.isBlank()){
+            throw new IllegalArgumentException("The brand of the vehicle can't be empty");
         }
         this.brand= newBrand;
     }
