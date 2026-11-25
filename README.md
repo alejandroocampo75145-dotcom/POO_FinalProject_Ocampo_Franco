@@ -178,7 +178,9 @@ classDiagram
         +getOwner() : Customer
         +getHourlyRate() : double*
         +getVehicleType() : String*
+        +toString() : String
     }
+
     class Car {
         +Car(newVehiclePlate : String, newBrand : String, newOwner : Customer)
         +getHourlyRate() : double

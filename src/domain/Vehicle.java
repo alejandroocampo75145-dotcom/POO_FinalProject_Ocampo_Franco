@@ -2,21 +2,21 @@ package domain;
 
 import java.io.Serializable;
 
-// Abstract base class representing any vehicle stored in the parking lot[span_0](start_span)[span_0](end_span)
+// Abstract base class representing any vehicle stored in the parking lot
 public abstract class Vehicle implements Serializable {
 
     private String vehiclePlate;
     private String brand;
     private Customer owner;
 
-    // Initializes a vehicle with validated plate, owner, and brand[span_1](start_span)[span_1](end_span)
+    // Initializes a vehicle with validated plate, owner, and brand
     public Vehicle(String newVehiclePlate, String newBrand, Customer newOwner) {
         setVehiclePlate(newVehiclePlate);
         setOwner(newOwner);
         setBrand(newBrand);
     }
 
-    // Validates and sets the vehicle's license or identifier plate[span_2](start_span)[span_2](end_span)
+    // Validates and sets the vehicle's license or identifier plate
     public void setVehiclePlate(String newVehiclePlate) {
         if (newVehiclePlate == null || newVehiclePlate.isBlank()) {
             throw new IllegalArgumentException("The plate of the vehicle can't be empty");
@@ -24,12 +24,12 @@ public abstract class Vehicle implements Serializable {
         this.vehiclePlate = newVehiclePlate;
     }
 
-    // Returns the vehicle's plate[span_3](start_span)[span_3](end_span)
+    // Returns the vehicle's plate
     public String getVehiclePlate() {
         return vehiclePlate;
     }
 
-    // Validates and sets the vehicle's brand[span_4](start_span)[span_4](end_span)
+    // Validates and sets the vehicle's brand
     public void setBrand(String newBrand) {
         if (newBrand == null || newBrand.isBlank()) {
             throw new IllegalArgumentException("The brand of the vehicle can't be empty");
@@ -37,12 +37,12 @@ public abstract class Vehicle implements Serializable {
         this.brand = newBrand;
     }
 
-    // Returns the vehicle's brand[span_5](start_span)[span_5](end_span)
+    // Returns the vehicle's brand
     public String getBrand() {
         return brand;
     }
 
-    // Validates and sets the customer who owns this vehicle[span_6](start_span)[span_6](end_span)
+    // Validates and sets the customer who owns this vehicle
     public void setOwner(Customer newOwner) {
         if (newOwner == null) {
             throw new IllegalArgumentException("The class of Customer can't be null");
@@ -50,16 +50,24 @@ public abstract class Vehicle implements Serializable {
         this.owner = newOwner;
     }
 
-    // Returns the customer who owns this vehicle[span_7](start_span)[span_7](end_span)
+    // Returns the customer who owns this vehicle
     public Customer getOwner() {
         return owner;
     }
 
-    // Returns the hourly parking fee for this vehicle type[span_8](start_span)[span_8](end_span)
+    // Returns the hourly parking fee for this vehicle type
     public abstract double getHourlyRate();
 
-    // Returns the vehicle type identifier[span_9](start_span)[span_9](end_span)
+    // Returns the vehicle type identifier
     public abstract String getVehicleType();
+
+    // Returns a formatted summary of the vehicle details
+    @Override
+    public String toString() {
+        return getVehicleType()
+                + " [Plate=" + vehiclePlate
+                + ", Brand=" + brand
+                + ", Owner=" + owner.getName()
+                + ", Rate=$" + getHourlyRate() + "/h]";
+    }
 }
-
-

@@ -209,11 +209,14 @@ public class ParkingLot implements Serializable {
         return null;
     }
 
-    // Parks a registered vehicle in a specific available and compatible parking spot
+        // Parks a registered vehicle in a specific available and compatible parking spot
     public void parkVehicle(String plate, int spaceNumber) {
         Vehicle vehicle = findVehicleByPlate(plate);
         if (vehicle == null) {
             throw new IllegalArgumentException("Vehicle with plate " + plate + " was not found");
+        }
+        if (!vehicle.getOwner().isActive()) {
+            throw new IllegalStateException("Cannot park a vehicle whose owner is inactive");
         }
         for (ParkingSpot parkingSpot : this.parkingSpots) {
             if (parkingSpot.isOccupied()) {
@@ -228,6 +231,7 @@ public class ParkingLot implements Serializable {
         }
         spot.setVehicle(vehicle);
     }
+
 
     // Checks out a parked vehicle, frees its spot, generates the receipt, and saves it in history
     public Receipt checkoutVehicle(String plate, int hours, String issueDate) {
