@@ -2,104 +2,111 @@ package domain;
 
 import java.io.Serializable;
 
+// Represents an individual parking spot inside the parking lot
 public class ParkingSpot implements Serializable {
-    
-    
+
     private int spaceNumber;
     private String spotType;
     private boolean isEnabled;
     private Vehicle vehicle;
 
-    public ParkingSpot(int spaceNumber, String spotType){
+    // Creates an enabled and empty parking spot with validated number and type
+    public ParkingSpot(int spaceNumber, String spotType) {
         setSpaceNumber(spaceNumber);
         setSpotType(spotType);
         this.isEnabled = true;
         this.vehicle = null;
-
     }
 
+    // Enables or disables the spot, preventing disabling while occupied
     public void setEnabled(boolean isEnabled) {
-    if (!isEnabled && isOccupied()) {
-        throw new IllegalStateException("Cannot disable an occupied spot");
+        if (!isEnabled && isOccupied()) {
+            throw new IllegalStateException("Cannot disable an occupied spot");
+        }
+        this.isEnabled = isEnabled;
     }
-    this.isEnabled = isEnabled;
-}
 
-    public boolean isEnabled(){
+    // Returns whether the spot is enabled for use
+    public boolean isEnabled() {
         return isEnabled;
     }
 
-
-    public boolean isOccupied(){
+    // Returns whether a vehicle is currently occupying the spot
+    public boolean isOccupied() {
         return this.vehicle != null;
-
     }
 
-    public boolean isAvailable(){
+    // Returns whether the spot is both enabled and unoccupied
+    public boolean isAvailable() {
         return this.isEnabled && !isOccupied();
     }
 
-    public Vehicle departed(){
-        if (!isOccupied() ){
+    // Releases the spot when a vehicle leaves and returns that vehicle
+    public Vehicle departed() {
+        if (!isOccupied()) {
             throw new IllegalArgumentException("This spot is already empty");
         }
         Vehicle departingVehicle = this.vehicle;
-        this.vehicle = null; 
+        this.vehicle = null;
         return departingVehicle;
-
     }
 
-    public void setVehicle(Vehicle vehicle){
-        if(vehicle == null){
+    // Assigns a compatible vehicle to the spot if it is currently available
+    public void setVehicle(Vehicle vehicle) {
+        if (vehicle == null) {
             throw new IllegalArgumentException(" the vehicle cant be null");
         }
-        if(!isAvailable()){
+        if (!isAvailable()) {
             throw new IllegalArgumentException(" This parking Spot isn't available");
         }
         if (!vehicle.getVehicleType().equalsIgnoreCase(this.spotType)) {
-        throw new IllegalArgumentException("Vehicle type (" + vehicle.getVehicleType() + ") does not match spot type (" + this.spotType + ")");
+            throw new IllegalArgumentException("Vehicle type (" + vehicle.getVehicleType() + ") does not match spot type (" + this.spotType + ")");
         }
-        this.vehicle= vehicle;
+        this.vehicle = vehicle;
     }
-    public Vehicle getVehicle(){
+
+    // Returns the vehicle currently parked in this spot, or null if empty
+    public Vehicle getVehicle() {
         return this.vehicle;
     }
 
-
-   private void setSpaceNumber(int spaceNumber) {
-    if (spaceNumber < 0 || spaceNumber > 21) {
-        throw new IllegalArgumentException("Space number must be between 0 and 21");
+    // Validates and sets the fixed space number between 0 and 21
+    private void setSpaceNumber(int spaceNumber) {
+        if (spaceNumber < 0 || spaceNumber > 21) {
+            throw new IllegalArgumentException("Space number must be between 0 and 21");
+        }
+        this.spaceNumber = spaceNumber;
     }
-    this.spaceNumber = spaceNumber;
-    }
 
-    public int getSpaceNumber(){
+    // Returns the space number of this parking spot
+    public int getSpaceNumber() {
         return spaceNumber;
     }
 
+    // Validates and sets the allowed vehicle type for this spot
     private void setSpotType(String spotType) {
-    if (spotType == null || spotType.isBlank()) {
-        throw new IllegalArgumentException("Spot type can't be empty");
+        if (spotType == null || spotType.isBlank()) {
+            throw new IllegalArgumentException("Spot type can't be empty");
+        }
+        String type = spotType.trim();
+        if (!type.equalsIgnoreCase("Car") &&
+            !type.equalsIgnoreCase("Motorcycle") &&
+            !type.equalsIgnoreCase("Bicycle") &&
+            !type.equalsIgnoreCase("Truck")) {
+            throw new IllegalArgumentException("Invalid spot type. Allowed: Car, Motorcycle, Bicycle, Truck");
+        }
+        this.spotType = type;
     }
-    String type = spotType.trim();
-    if (!type.equalsIgnoreCase("Car") && 
-        !type.equalsIgnoreCase("Motorcycle") && 
-        !type.equalsIgnoreCase("Bicycle") && 
-        !type.equalsIgnoreCase("Truck")) {
-        throw new IllegalArgumentException("Invalid spot type. Allowed: Car, Motorcycle, Bicycle, Truck");
-    }
-    this.spotType = type;
-    }
-    public String getSpotType(){
+
+    // Returns the vehicle type assigned to this spot
+    public String getSpotType() {
         return spotType;
     }
 
-    @Override 
-    public String toString() {  
+    // Returns a text description of the spot number, type, and current status
+    @Override
+    public String toString() {
         String status = !isEnabled ? "Disabled" : (isOccupied() ? "Occupied by " + vehicle.getVehiclePlate() : "Available");
         return "Spot #" + spaceNumber + " [" + spotType + "] - " + status;
     }
-
 }
-
-

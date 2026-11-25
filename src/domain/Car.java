@@ -1,17 +1,24 @@
 package domain;
+
 import java.io.Serializable;
 
-public class Car extends Vehicle implements Serializable{
-    public Car(String newVehiclePlate, String newBrand, Customer newOwner){
+// Represents a car in the parking lot system
+public class Car extends Vehicle implements Serializable {
+
+    // Creates a car with its plate, brand, and owner
+    public Car(String newVehiclePlate, String newBrand, Customer newOwner) {
         super(newVehiclePlate, newBrand, newOwner);
     }
 
-    @Override 
-    public double getHourlyRate(){
+    // Returns the hourly parking rate for a car
+    @Override
+    public double getHourlyRate() {
         return 5000.00;
     }
+
+    // Returns the vehicle type identifier for a car
     @Override
-    public String getVehicleType(){
+    public String getVehicleType() {
         return "CAR";
     }
 }
