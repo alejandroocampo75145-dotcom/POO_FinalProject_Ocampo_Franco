@@ -57,7 +57,9 @@ public class MainConsole {
         System.out.println("1. Vehicle Management");
         System.out.println("2. Parking Operations (Entry / Exit / Recommendation)");
         System.out.println("3. Receipts & Billing");
-        System.out.println("4. Save Data");
+        System.out.println("4. Customers Management");
+        System.out.println("5. Reports & CSV Export");
+        System.out.println("6. Save Data");
         System.out.println("0. Save and Exit");
     }
 
@@ -387,6 +389,126 @@ public class MainConsole {
     }
 
     // =========================================================================
+    // 4. CUSTOMERS MANAGEMENT
+    // =========================================================================
+
+    private static void customerMenu(ParkingLot parkingLot , Scanner scanner){
+        int option;
+
+        do{
+            System.out.println("1. Register a new customer");
+            System.out.println("2. List all customers");
+            System.out.println("3. Search customer by ID");
+            System.out.println("4. Update customer information");
+            System.out.println("5. Deactivate a customer");
+            System.out.println("0. Back to main menu");
+
+            option = readInt(scanner, "Select an option: ");
+            switch(option){
+                case 1:
+                    registerCustomer(parkingLot, scanner);
+                    break;
+                case 2:
+                    listCustomers(parkingLot, scanner);
+                    break;
+                case 3:
+                    searchCustomerByid(parkingLot, scanner);
+                    break;
+                case 4: 
+                    updateCustomerInformation(parkingLot, scanner);
+                    break;
+                case 5:
+                    deActivateCustomer(parkingLot, scanner);
+                    break;
+            }
+        }while (option != 0);
+    }
+
+    // Register customers
+
+    private static void registerCustomer(ParkingLot parkingLot, Scanner scanner){
+        try{
+        int id = readInt(scanner, "Enter customer ID: ");
+        String name = readString(scanner, "Enter the customer name: ");
+        String phoneNumber = readString(scanner, "Enter the customer's phone number: ");
+        String email = readString(scanner, "Enter the customer's email: ");
+
+        Customer customer = new Customer(id, name, phoneNumber, email);
+
+        System.out.println("Customer registered successfully: " + customer);
+
+        parkingLot.addCustomer(customer);}
+        catch(IllegalArgumentException e ){
+            System.out.println("Error: " + e.getMessage());
+
+        }
+    }
+
+    // List the customers 
+
+    private static void listCustomers(ParkingLot parkingLot, Scanner scanner){
+        ArrayList<Customer> customers = parkingLot.getCustomers();
+        if(customers.isEmpty()){
+            System.out.println("There are not registered customers At the moment ");
+        }
+        System.out.println("\n--- Registered Customers (" + customers.size() + ") ---");
+        for (Customer customer : customers) {
+            System.out.println("- " + customer);
+        }
+    }
+
+    // Search customer by id 
+
+    private static void  searchCustomerByid(ParkingLot parkingLot, Scanner scanner){
+        int id = readInt(scanner, "Enter the desired Id");
+        Customer customer = parkingLot.findCustomerById(id);
+        if (customer == null){
+            System.out.println("No customer found with ID: " + id);
+        } else {
+        System.out.println("Customer found: " + customer);
+        }
+
+    }
+
+    //update customer's information 
+
+    private static void updateCustomerInformation(ParkingLot parkingLot, Scanner scanner){
+        try{
+        int id = readInt(scanner, "Enter the id to update its information");
+        Customer customer = parkingLot.findCustomerById(id);
+        if (customer == null){
+            System.out.println("No customer found ");
+        }
+        System.out.println("Update information for the client: " + customer);
+        String newphoneNumber = readString(scanner, "New Phone number");
+        String newEmail = readString(scanner, "New Email");
+
+        parkingLot.updateCustomerInformation(id, newphoneNumber, newEmail);
+        System.out.println("Customer updated successfully: " + customer);
+        }
+        catch(IllegalArgumentException e){
+            System.out.println("Customer information was updated");
+        }
+    }
+
+    // deactivate Customer
+
+    private static void deActivateCustomer(ParkingLot parkingLot, Scanner scanner){
+        try{
+        int id = readInt(scanner, "Enter the Id of the client to deactivate");
+        parkingLot.deActivateCustomer(id);
+        System.out.println("Client with the id: " + id + " Deactivaded");
+
+        }catch(IllegalArgumentException e){
+            System.out.println("Error  " + e.getMessage());
+        }    
+    }
+
+
+    
+
+
+    // =========================================================================
     // MAIN ENTRY POINT (ONLY STARTUP & MAIN MENU)
     // =========================================================================
 
@@ -410,6 +532,13 @@ public class MainConsole {
                     receiptMenu(parkingLot, scanner);
                     break;
                 case 4:
+                    customerMenu(parkingLot, scanner);
+                    break;
+                case 5:
+
+                    break;
+
+                case 6:
                     ParkingLotStorage.save(parkingLot, DATA_FILE);
                     break;
                 case 0:
