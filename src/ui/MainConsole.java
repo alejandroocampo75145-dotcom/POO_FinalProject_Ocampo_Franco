@@ -3,6 +3,7 @@ package ui;
 import data.*;
 import domain.*;
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -58,8 +59,9 @@ public class MainConsole {
         System.out.println("2. Parking Operations (Entry / Exit / Recommendation)");
         System.out.println("3. Receipts & Billing");
         System.out.println("4. Customers Management");
-        System.out.println("5. Reports & CSV Export");
-        System.out.println("6. Save Data");
+        System.out.println("5. Space Management");
+        System.out.println("6. CSV Export");
+        System.out.println("7. Save Data");
         System.out.println("0. Save and Exit");
     }
 
@@ -420,6 +422,11 @@ public class MainConsole {
                 case 5:
                     deActivateCustomer(parkingLot, scanner);
                     break;
+                case 0:
+                    System.out.println("Returning to Principal menu");
+                    break;
+                default:
+                    System.out.println("Invalid Option please try again");
             }
         }while (option != 0);
     }
@@ -434,10 +441,10 @@ public class MainConsole {
         String email = readString(scanner, "Enter the customer's email: ");
 
         Customer customer = new Customer(id, name, phoneNumber, email);
-
+        
+        parkingLot.addCustomer(customer);
         System.out.println("Customer registered successfully: " + customer);
-
-        parkingLot.addCustomer(customer);}
+             }
         catch(IllegalArgumentException e ){
             System.out.println("Error: " + e.getMessage());
 
@@ -478,6 +485,7 @@ public class MainConsole {
         Customer customer = parkingLot.findCustomerById(id);
         if (customer == null){
             System.out.println("No customer found ");
+            return;
         }
         System.out.println("Update information for the client: " + customer);
         String newphoneNumber = readString(scanner, "New Phone number");
@@ -487,7 +495,7 @@ public class MainConsole {
         System.out.println("Customer updated successfully: " + customer);
         }
         catch(IllegalArgumentException e){
-            System.out.println("Customer information was updated");
+            System.out.println("Customer information was not updated try again" + e.getMessage());
         }
     }
 
@@ -505,7 +513,149 @@ public class MainConsole {
     }
 
 
+
+    // =========================================================================
+    // 5. SPACES MANAGEMENT
+    // =========================================================================
+
+    private static void spacesManagement(ParkingLot parkingLot, Scanner scanner){
+        int option;
+        do { 
+            System.out.println("---Sapaces Management---");
+            System.out.println("1. Show all the spaces");
+            System.out.println("2. Show only empty spaces");
+            System.out.println("3. clear a Space");
+            System.out.println("4. Disable space");
+            System.out.println("0. Return to principal menu");
+
+            option = readInt(scanner, "Select your desired option");
+            
+            switch(option){
+                case 1:
+                    showAllSpaces(parkingLot);
+                    break;
+                case 2:
+                    ShowEmptySpaces(parkingLot);
+                    break;
+                case 3:
+                    clearSpace(parkingLot, scanner);
+                    break;
+                case 4:
+                    disableSpace(parkingLot, scanner);
+                    break;
+                case 0:
+                    System.out.println("Returning to principal menu");
+                    break;
+                default:
+                    System.out.println("Invalid option, try again");
+
+            }
+
+        } while (option != 0);
+    }
+
+    // show all spaces
+
+    private static void showAllSpaces(ParkingLot parkingLot){
+        ArrayList<ParkingSpot> parkingSpots = parkingLot.getParkingSpots();
+        System.out.println("--- Parking Spots ---");
+        for (ParkingSpot parkingSpot : parkingSpots){
+            System.out.println("-" + parkingSpot);
+        }
+    }
+
+    //show empty spaces
+
+    private static void ShowEmptySpaces(ParkingLot parkingLot){
+        ArrayList<ParkingSpot> parkingSpots = parkingLot.getParkingSpots();
+        for (ParkingSpot parkingSpot : parkingSpots){
+            if(parkingSpot.isAvailable()){
+                System.out.println("- " + parkingSpot);
+            }
+        }
+    }
+
+    // clear/ activate a space 
+
+    private static void clearSpace(ParkingLot parkingLot, Scanner scanner){
+        
+        showAllSpaces(parkingLot);
+        try{
+        int spaceNumber = readInt(scanner, "From the Spaces shown select the one to activate(empty the vehicle) Choose a number between 0-21");
+        parkingLot.updateSpotStatus(spaceNumber, true);
+        System.out.println("Spot activated succesfully");
+        }catch(IllegalArgumentException | IllegalStateException e){
+            System.out.println("Error "+ e.getMessage());
+
+        }
+
+    }
+    private static void disableSpace(ParkingLot parkingLot, Scanner scanner){
+        showAllSpaces(parkingLot);
+        try{
+        int spaceNumber = readInt(scanner, "From the Spaces shown select the one to desactivate(occuped or in mainteninance) Choose a number between 0-21");
+        parkingLot.updateSpotStatus(spaceNumber, false);
+        System.out.println("Spot desactivated succesfully");
+        }catch(IllegalArgumentException | IllegalStateException  e){
+            System.out.println("Error "+ e.getMessage());
+
+        }
+
+    }
     
+     // =========================================================================
+    // CSV Exports Menu
+    // =========================================================================
+
+    private static void exportCSV(ParkingLot parkingLot, Scanner scanner){
+        int option;
+        do { 
+            System.out.println("---CSV Export---");
+            System.out.println("1. Export customers");
+            System.out.println("2. Export Receipts");
+            System.out.println("0. back to main menu");
+            
+
+            option = readInt(scanner, "Select your desired option");
+            
+            switch(option){
+                case 1:
+                    String fileName = readString(scanner, "Write the name of the file to be downloaded with the extension .csv");
+                    if (!fileName.toLowerCase().endsWith(".csv")) {
+                        fileName += ".csv";
+                    }
+                    try {
+                         CsvExporter.exportCustomers(parkingLot.getCustomers(), fileName);
+                         System.out.println("Exported successfully to " + fileName);
+                        } catch (IOException e) {
+                        System.out.println("Could not export customers: " + e.getMessage());
+                        }
+                    break;
+                case 2:
+                    String file = readString(scanner, "Write the name of the file to be downloaded");
+                    if (!file.toLowerCase().endsWith(".csv")) {
+                        file += ".csv";
+                    }
+                    try {
+                        CsvExporter.exportReceipt(parkingLot.getReceipts(), file);
+                        System.out.println("Exported successfully to " + file);
+                        } catch (IOException e) {
+                        System.out.println("Could not export Receipts: " + e.getMessage());
+                        }
+                    break;
+                case 0:
+                    System.out.println("Returning to main menu");
+                    break;
+                
+                default:
+                    System.out.println("Invalid option, try again");
+
+            }
+
+        } while (option != 0);
+    }
+    
+
 
 
     // =========================================================================
@@ -535,10 +685,12 @@ public class MainConsole {
                     customerMenu(parkingLot, scanner);
                     break;
                 case 5:
-
+                    spacesManagement(parkingLot, scanner);
                     break;
-
                 case 6:
+                    exportCSV(parkingLot, scanner);
+                    break;
+                case 7:
                     ParkingLotStorage.save(parkingLot, DATA_FILE);
                     break;
                 case 0:

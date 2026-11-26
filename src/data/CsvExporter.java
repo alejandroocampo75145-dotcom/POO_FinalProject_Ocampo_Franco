@@ -11,8 +11,8 @@ import java.util.List;
 public class CsvExporter {
 
     // Exports the list of customers to a CSV file at the given path
-    public static void exportCustomers(List<Customer> customers, String filePath) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+    public static void exportCustomers(List<Customer> customers, String fileName) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
 
             // Write CSV header row
             writer.println("ID,Name,Phone,Email,Active");
@@ -31,8 +31,8 @@ public class CsvExporter {
     }
 
     // Exports the list of receipts to a CSV file at the given path
-    public static void exportReceipt(List<Receipt> receipts, String filePath) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+    public static void exportReceipt(List<Receipt> receipts, String fileName) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
 
             // Write CSV header row
             writer.println("Id,Customer,Vehicle,ParkingSpot,Hours,issueDate,TotalAmount,Status");
